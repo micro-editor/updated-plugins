@@ -1,0 +1,17 @@
+2020/02/08 21:45:44 Micro started
+2020/02/08 21:45:44 .git is not a plugin
+2020/02/08 21:45:44 json: cannot unmarshal object into Go value of type []config.PluginInfo
+2020/02/08 21:45:44 json: cannot unmarshal object into Go value of type []config.PluginInfo
+2020/02/08 21:45:44 <nil>
+2020/02/08 21:45:45 hi map[autoindent:true backup:true basename:false colorcolumn:0 commenttype:# %s cursorline:true encoding:utf-8 eofnewline:false fastdirty:false fileformat:unix filetype:unknown ignorecase:false indentchar: keepautoindent:false matchbrace:true mkparents:true readonly:false rmtrailingws:false ruler:true savecursor:true saveundo:true scrollbar:false scrollmargin:3 scrollspeed:2 smartpaste:true softwrap:true splitbottom:true splitright:true statusformatl:$(filename) $(modified)($(line),$(col)) $(status.paste)| ft:$(opt:filetype) | $(opt:fileformat) | $(opt:encoding) statusformatr:$(bind:ToggleKeyMenu): bindings, $(bind:ToggleHelp): help statusline:true syntax:true tabmovement:false tabsize:4 tabstospaces:true useprimary:true]
+2020/02/08 21:45:45 snippets-plugin -> function onBeforeTextEvent(ev) = userdata: 0xc000667620
+2020/02/08 21:45:45 snippets-plugin -> function onBeforeTextEvent(ev) = userdata: 0xc0006676e0
+2020/02/08 21:45:45 snippets-plugin -> function onBeforeTextEvent(ev) = userdata: 0xc000667740
+2020/02/08 21:45:45 hi map[autoindent:true backup:true basename:false colorcolumn:0 commenttype:# %s cursorline:true encoding:utf-8 eofnewline:false fastdirty:false fileformat:unix filetype:unknown ignorecase:false indentchar: keepautoindent:false matchbrace:true mkparents:true readonly:false rmtrailingws:false ruler:true savecursor:true saveundo:true scrollbar:false scrollmargin:3 scrollspeed:2 smartpaste:true softwrap:true splitbottom:true splitright:true statusformatl:$(filename) $(modified)($(line),$(col)) $(status.paste)| ft:$(opt:filetype) | $(opt:fileformat) | $(opt:encoding) statusformatr:$(bind:ToggleKeyMenu): bindings, $(bind:ToggleHelp): help statusline:true syntax:true tabmovement:false tabsize:4 tabstospaces:true useprimary:true]
+2020/02/08 21:45:45 snippets-plugin -> function onBeforeTextEvent(ev) = userdata: 0xc0006b0480
+2020/02/08 21:45:45 snippets-plugin -> function onBeforeTextEvent(ev) = userdata: 0xc0006b04e0
+2020/02/08 21:45:45 snippets-plugin -> function onBeforeTextEvent(ev) = userdata: 0xc0006b0540
+2020/02/08 21:45:45 hi map[autoindent:true backup:true basename:false colorcolumn:0 commenttype:# %s cursorline:true encoding:utf-8 eofnewline:false fastdirty:false fileformat:unix filetype:unknown ignorecase:false indentchar: keepautoindent:false matchbrace:true mkparents:true readonly:false rmtrailingws:false ruler:true savecursor:true saveundo:true scrollbar:false scrollmargin:3 scrollspeed:2 smartpaste:true softwrap:true splitbottom:true splitright:true statusformatl:$(filename) $(modified)($(line),$(col)) $(status.paste)| ft:$(opt:filetype) | $(opt:fileformat) | $(opt:encoding) statusformatr:$(bind:ToggleKeyMenu): bindings, $(bind:ToggleHelp): help statusline:true syntax:true tabmovement:false tabsize:4 tabstospaces:true useprimary:true]
+2020/02/08 21:45:45 snippets-plugin -> function onBeforeTextEvent(ev) = userdata: 0xc000718480
+2020/02/08 21:45:45 snippets-plugin -> function onBeforeTextEvent(ev) = userdata: 0xc0007184e0
+2020/02/08 21:45:45 snippets-plugin -> function onBeforeTextEvent(ev) = userdata: 0xc000718540

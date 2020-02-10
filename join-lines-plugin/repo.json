@@ -1,0 +1,22 @@
+[{
+  "Name": "joinLines",
+  "Description": "Plugin to join selected lines or join the following line with the current one",
+  "Website": "https://github.com/Lisiadito/join-lines-plugin",
+  "Tags": ["join lines"],
+  "Versions": [
+    {
+      "Version": "1.1.0",
+      "Url": "https://github.com/Lisiadito/join-lines-plugin/archive/v1.1.0.zip",
+      "Require": {
+        "micro": ">=2.0.0-1"
+      }
+    },
+    {
+      "Version": "1.0.0",
+      "Url": "https://github.com/Lisiadito/join-lines-plugin/archive/v1.0.0.zip",
+      "Require": {
+        "micro": ">=1.1.0"
+      }
+    }
+  ]
+}]

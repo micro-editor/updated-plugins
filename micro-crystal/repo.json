@@ -1,0 +1,22 @@
+[{
+  "Name": "crystal",
+  "Description": "adds helpful crystal tools",
+  "Tags": ["crystal-lang", "crystal"],
+  "Website": "https://github.com/ColinRioux/micro-crystal",
+  "Versions": [
+    {
+      "Version": "1.1.0",
+      "Url": "https://github.com/ColinRioux/micro-crystal/archive/1.1.0.zip",
+      "Require": {
+        "micro": ">=2.0.0-1"
+      }
+    },
+    {
+      "Version": "1.0.0",
+      "Url": "https://github.com/ColinRioux/micro-crystal/archive/1.0.0.zip",
+      "Require": {
+        "micro": ">=1.0.3"
+      }
+    }
+  ]
+}]
