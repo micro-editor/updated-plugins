@@ -148,7 +148,7 @@ function getApplyProperties(bufpane)
         log(("Running editorconfig %s"):format(fullpath))
     end
 
-    shell.JobSpawn("editorconfig", {fullpath}, nil, nil, onEditorConfigExit, buffer)
+    shell.JobSpawn("editorconfig", {fullpath}, nil, nil, editorconfig.onEditorConfigExit, buffer)
 end
 
 function onBufPaneOpen(bp)
