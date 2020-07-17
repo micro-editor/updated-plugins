@@ -1,4 +1,4 @@
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 
 local micro = import("micro")
 local shell = import("micro/shell")
@@ -12,11 +12,11 @@ function fzf(bp)
             micro.InfoBar():Error(err)
         end
     else
-        local output, err = RunInteractiveShell("fzf", false, true)
+        local output, err = shell.RunInteractiveShell("fzf", false, true)
         if err ~= nil then
             micro.InfoBar():Error(err)
         else
-            fzfOutput(output)
+            fzfOutput(output, {bp})
         end
     end
 end
