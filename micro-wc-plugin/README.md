@@ -1,5 +1,3 @@
 # Micro Word Count Plugin
 
-*Written in Go*
-
-Word and character counter for micro editor.
+Simple word, line and character counter for micro editor.
