@@ -1,7 +1,7 @@
 [{
   "Name": "snippets",
   "Description": "plugin to insert language specific code snippets.",
-  "Website": "https://github.com/tommyshem/micro-snippets-plugin",
+  "Website": "https://github.com/micro-editor/updated-plugins/tree/master/micro-snippets-plugin",
   "Tags": ["snippet"],
   "Versions": [
     {
