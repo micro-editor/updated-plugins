@@ -15,14 +15,9 @@ snippet f "" w
 	function(${1}) {
 		${0}
 	}
-# Anonymous Function assigned to variable
-snippet vaf
-	var ${1:function_name} = function(${2}) {
-		${0}
-	};
 # Function assigned to variable
-snippet vf
-	var ${1:function_name} = function $1(${2}) {
+snippet cf
+	const ${1:function_name} = (${2}) => {
 		${0}
 	};
 # Immediate function
