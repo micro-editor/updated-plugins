@@ -284,15 +284,19 @@ local function CursorWord(bp)
 	local c = bp.Cursor
 	local x = c.X-1 -- start one rune before the cursor
 	local result = ""
+	local debug = io.open("debug","a")
 	while x >= 0 do
 		local r = util.RuneStr(c:RuneUnder(x))
-		if (r == " ") then    -- IsWordChar(r) then
+		if (r:match("^%s")) then    -- IsWordChar(r) then
 			break
 		else
+			debug:write(r.. "\n")
 			result = r .. result
 		end
 		x = x-1
 	end
+
+	debug:close()
 
 	return result
 end
