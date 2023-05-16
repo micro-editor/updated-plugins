@@ -1,4 +1,4 @@
-VERSION = "3.5.0"
+VERSION = "3.5.1"
 
 local micro = import("micro")
 local config = import("micro/config")
@@ -614,7 +614,7 @@ end
 -- Prompts for a new name, then renames the file/dir at the cursor's position
 -- Not local so Micro can use it
 function rename_at_cursor(bp, args)
-	
+
 	if micro.CurPane() ~= tree_view then
 		micro.InfoBar():Message("Rename only works with the cursor in the tree!")
 		return
@@ -816,7 +816,7 @@ function new_dir(bp, args)
 	end
 
 	local dir_name = args[1]
-	
+
 	-- True because dir
 	create_filedir(dir_name, true)
 end
