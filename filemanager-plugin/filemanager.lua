@@ -74,7 +74,7 @@ end
 local function get_ignored_files(tar_dir)
 	-- True/false if the target dir returns a non-fatal error when checked with 'git status'
 	local function has_git()
-		local git_rp_results = RunShellCommand('git  -C "' .. tar_dir .. '" rev-parse --is-inside-work-tree')
+		local git_rp_results = shell.ExecCommand('git  -C "' .. tar_dir .. '" rev-parse --is-inside-work-tree')
 		return git_rp_results:match("^true%s*$")
 	end
 	local readout_results = {}
@@ -82,7 +82,7 @@ local function get_ignored_files(tar_dir)
 	if has_git() then
 		-- If the dir is a git dir, get all ignored in the dir
 		local git_ls_results =
-			RunShellCommand('git -C "' .. tar_dir .. '" ls-files . --ignored --exclude-standard --others --directory')
+			shell.ExecCommand('git -C "' .. tar_dir .. '" ls-files . --ignored --exclude-standard --others --directory')
 		-- Cut off the newline that is at the end of each result
 		for split_results in string.gmatch(git_ls_results, "([^\r\n]+)") do
 			-- git ls-files adds a trailing slash if it's a dir, so we remove it (if it is one)
@@ -217,7 +217,7 @@ end
 -- Joins the target dir's leading path to the passed name
 local function dirname_and_join(path, join_name)
 	-- The leading path to the dir we're in
-	local leading_path = DirectoryName(path)
+	local leading_path = filepath.Dir(path)
 	-- Joins with OS-specific slashes
 	return filepath.Join(leading_path, join_name)
 end
@@ -500,7 +500,7 @@ local function go_back_dir()
 	local one_back_dir = filepath.Dir(current_dir)
 	-- Try opening, assuming they aren't at "root", by checking if it matches last dir
 	if one_back_dir ~= current_dir then
-		-- If DirectoryName returns different, then they can move back..
+		-- If filepath.Dir returns different, then they can move back..
 		-- so we update the current dir and refresh
 		update_current_dir(one_back_dir)
 	end
@@ -613,17 +613,20 @@ end
 
 -- Prompts for a new name, then renames the file/dir at the cursor's position
 -- Not local so Micro can use it
-function rename_at_cursor(new_name)
+function rename_at_cursor(bp, args)
+	
 	if micro.CurPane() ~= tree_view then
 		micro.InfoBar():Message("Rename only works with the cursor in the tree!")
 		return
 	end
 
 	-- Safety check they actually passed a name
-	if new_name == nil then
+	if #args < 1 then
 		micro.InfoBar():Error('When using "rename" you need to input a new name')
 		return
 	end
+
+	local new_name = args[1]
 
 	-- +1 since Go uses zero-based indices
 	local y = get_safe_y()
@@ -789,15 +792,33 @@ local function create_filedir(filedir_name, make_dir)
 end
 
 -- Triggered with "touch filename"
-function new_file(input_name)
+function new_file(bp, args)
+
+	-- Safety check they actually passed a name
+	if #args < 1 then
+		micro.InfoBar():Error('When using "touch" you need to input a file name')
+		return
+	end
+
+	local file_name = args[1]
+
 	-- False because not a dir
-	create_filedir(input_name, false)
+	create_filedir(file_name, false)
 end
 
 -- Triggered with "mkdir dirname"
-function new_dir(input_name)
+function new_dir(bp, args)
+
+	-- Safety check they actually passed a name
+	if #args < 1 then
+		micro.InfoBar():Error('When using "mkdir" you need to input a dir name')
+		return
+	end
+
+	local dir_name = args[1]
+	
 	-- True because dir
-	create_filedir(input_name, true)
+	create_filedir(dir_name, true)
 end
 
 -- open_tree setup's the view
