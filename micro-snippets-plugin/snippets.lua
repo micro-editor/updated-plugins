@@ -286,13 +286,14 @@ local function CursorWord(bp)
 	local result = ""
 	while x >= 0 do
 		local r = util.RuneStr(c:RuneUnder(x))
-		if (r == " ") then    -- IsWordChar(r) then
+		if (r:match("^%s")) then    -- IsWordChar(r) then
 			break
 		else
 			result = r .. result
 		end
 		x = x-1
 	end
+
 
 	return result
 end
