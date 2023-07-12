@@ -841,6 +841,8 @@ local function open_tree()
     tree_view.Buf:SetOptionNative("softwrap", true)
     -- No line numbering
     tree_view.Buf:SetOptionNative("ruler", false)
+    -- No diff gutter
+    tree_view.Buf:SetOptionNative("diffgutter", false)
     -- Is this needed with new non-savable settings from being "vtLog"?
     tree_view.Buf:SetOptionNative("autosave", false)
     -- Don't show the statusline to differentiate the view from normal views
