@@ -335,7 +335,7 @@ end
 local function compress_target(y, delete_y)
 	-- Can't compress the top stuff, or if there's nothing there, so exit early
 	if y == 0 or scanlist_is_empty() then
-		return
+		return false
 	end
 	-- Check if the target is a dir, since files don't have anything to compress
 	-- Also make sure it's actually an uncompressed dir by checking the gutter message
@@ -401,7 +401,7 @@ local function compress_target(y, delete_y)
 	elseif config.GetGlobalOption("filemanager.compressparent") and not delete_y then
 		goto_parent_dir()
 		-- Prevent a pointless refresh of the view
-		return
+		return true
 	end
 
 	-- Put outside check above because we call this to delete targets as well
@@ -433,6 +433,8 @@ local function compress_target(y, delete_y)
 	end
 
 	refresh_and_select()
+
+	return true
 end
 
 -- Prompts the user for deletion of a file/dir when triggered
@@ -516,6 +518,7 @@ local function try_open_at_y(y)
 	-- 2 is the zero-based index of ".."
 	if y == 2 then
 		go_back_dir()
+		return true
 	elseif y > 2 and not scanlist_is_empty() then
 		-- -2 to conform to our scanlist "missing" first 3 indicies
 		y = y - 2
@@ -530,8 +533,10 @@ local function try_open_at_y(y)
 			-- Resizes all views after opening a file
 			-- tabs[curTab + 1]:Resize()
 		end
+		return true
 	else
 		micro.InfoBar():Error("Can't open that")
+		return false
 	end
 end
 
@@ -539,7 +544,7 @@ end
 local function uncompress_target(y)
 	-- Exit early if on the top 3 non-list items
 	if y == 0 or scanlist_is_empty() then
-		return
+		return false
 	end
 	-- Only uncompress if it's a dir and it's not already uncompressed
 	if scanlist[y].dirmsg == "+" then
@@ -591,6 +596,10 @@ local function uncompress_target(y)
 		end
 
 		refresh_and_select()
+
+		return true
+	else
+		return false
 	end
 end
 
@@ -879,14 +888,18 @@ end
 
 function uncompress_at_cursor()
 	if micro.CurPane() == tree_view then
-		uncompress_target(get_safe_y())
+		return uncompress_target(get_safe_y())
+	else
+		return false
 	end
 end
 
 function compress_at_cursor()
 	if micro.CurPane() == tree_view then
 		-- False to not delete y
-		compress_target(get_safe_y(), false)
+		return compress_target(get_safe_y(), false)
+	else
+		return false
 	end
 end
 
@@ -894,7 +907,7 @@ end
 -- Not local so it can be bound
 function goto_prev_dir()
 	if micro.CurPane() ~= tree_view or scanlist_is_empty() then
-		return
+		return false
 	end
 
 	local cur_y = get_safe_y()
@@ -908,17 +921,18 @@ function goto_prev_dir()
 				-- Jump to its parent (the ownership)
 				tree_view.Cursor:UpN(move_count)
 				select_line()
-				break
+				return true
 			end
 		end
 	end
+	return false
 end
 
 -- Goes down 1 visible directory (if any)
 -- Not local so it can be bound
 function goto_next_dir()
 	if micro.CurPane() ~= tree_view or scanlist_is_empty() then
-		return
+		return false
 	end
 
 	local cur_y = get_safe_y()
@@ -937,17 +951,18 @@ function goto_next_dir()
 				-- Jump to its parent (the ownership)
 				tree_view.Cursor:DownN(move_count)
 				select_line()
-				break
+				return true
 			end
 		end
 	end
+	return false
 end
 
 -- Goes to the parent directory (if any)
 -- Not local so it can be keybound
 function goto_parent_dir()
 	if micro.CurPane() ~= tree_view or scanlist_is_empty() then
-		return
+		return false
 	end
 
 	local cur_y = get_safe_y()
@@ -956,15 +971,18 @@ function goto_parent_dir()
 		-- Jump to its parent (the ownership)
 		tree_view.Cursor:UpN(cur_y - scanlist[cur_y].owner)
 		select_line()
+		return true
+	else
+		return false
 	end
 end
 
 function try_open_at_cursor()
 	if micro.CurPane() ~= tree_view or scanlist_is_empty() then
-		return
+		return false
 	end
 
-	try_open_at_y(tree_view.Cursor.Loc.Y)
+	return try_open_at_y(tree_view.Cursor.Loc.Y)
 end
 
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
