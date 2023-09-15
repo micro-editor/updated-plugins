@@ -46,6 +46,13 @@
 					"Require": {
 							"micro": ">=2.0.0-1"
 					}
+			},
+			{
+					"Version": "3.5.3",
+					"Url": "https://github.com/micro-editor/updated-plugins/releases/download/v1.0.0/filemanager-3.5.3.zip",
+					"Require": {
+							"micro": ">=2.0.0-1"
+					}
 			}
 		]
 	}
