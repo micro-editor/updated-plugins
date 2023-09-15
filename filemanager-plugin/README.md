@@ -25,6 +25,7 @@ If the directory is expanded, there will be a `+` to the left of it. If it is co
 | `filemanager-compressparent` | Collapse the parent dir when left is pressed on a child file | `true`  |
 | `filemanager-foldersfirst`   | Sorts folders above any files                                | `true`  |
 | `filemanager-openonstart`    | Automatically open the file tree when starting Micro         | `false` |
+| `filemanager-openontab`      | Open the selected file in a new tab instead of a split       | `false` |
 
 ### Commands and Keybindings
 
@@ -36,6 +37,7 @@ If you want to [keybind](https://github.com/zyedidia/micro/blob/master/runtime/h
 | :------- | :------------------------- | :------------------------------------------------------------------------------------------ | :------------------------------------ |
 | `tree`   | -                          | Open/close the tree                                                                         | `filemanager.toggle_tree`             |
 | -        | <kbd>Tab</kbd> & MouseLeft | Open a file, or go into the directory. Goes back a dir if on `..`                           | `filemanager.try_open_at_cursor`      |
+| -        | <kbd>Enter</kbd>           | If `openontab` is true, open selected file in new tab                                       | `filemanager.try_open_at_cursor`      |
 | -        | <kbd>→</kbd>               | Expand directory in tree listing                                                            | `filemanager.uncompress_at_cursor`    |
 | -        | <kbd>←</kbd>               | Collapse directory listing                                                                  | `filemanager.compress_at_cursor`      |
 | -        | <kbd>Shift ⬆</kbd>         | Go to the target's parent directory                                                         | `filemanager.goto_parent_dir`         |
