@@ -1,11 +1,13 @@
-VERSION = "3.5.2"
+VERSION = "3.5.3"
 
 local micro = import("micro")
 local config = import("micro/config")
 local shell = import("micro/shell")
 local buffer = import("micro/buffer")
+local uutil = import("micro/util")
 local os = import("os")
 local filepath = import("path/filepath")
+local time = import("time")
 
 -- Clear out all stuff in Micro's messenger
 local function clear_messenger()
@@ -23,6 +25,10 @@ local highest_visible_indent = 0
 local scanlist = {}
 -- Holds the selected cursor y pos inbetween closes and opens
 local s_cursy = 2
+-- Holds the current temporal filter
+local quick_filter = ""
+-- Holds the timer that's erasing the quick filter upon no activity
+local quick_timer = nil
 
 -- Get a new object used when adding to scanlist
 local function new_listobj(p, d, o, i)
@@ -274,9 +280,9 @@ local function refresh_view()
 	-- Current dir
 	tree_view.Buf.EventHandler:Insert(buffer.Loc(0, 0), current_dir .. "\n")
 	-- An ASCII separator
-	tree_view.Buf.EventHandler:Insert(buffer.Loc(0, 1), repeat_str("─", tree_view:GetView().Width) .. "\n")
+	tree_view.Buf.EventHandler:Insert(buffer.Loc(0, 1), repeat_str("─", tree_view:GetView().Width) .. '\n' .. quick_filter)
 	-- The ".." and use a newline if there are things in the current dir
-	tree_view.Buf.EventHandler:Insert(buffer.Loc(0, 2), (#scanlist > 0 and "..\n" or ".."))
+	tree_view.Buf.EventHandler:Insert(buffer.Loc(0, 2), "📁" .. (#scanlist > 0 and "..\n" or ".."))
 
 	-- Holds the current basename of the path (purely for display)
 	local display_content
@@ -287,11 +293,15 @@ local function refresh_view()
 		if scanlist[i].dirmsg ~= "" then
 			-- Add the + or - to the left to signify if it's compressed or not
 			-- Add a forward slash to the right to signify it's a dir
-			display_content = scanlist[i].dirmsg .. " " .. get_basename(scanlist[i].abspath) .. "/"
+			if scanlist[i].dirmsg == "+" then
+			display_content = "📁 " .. get_basename(scanlist[i].abspath) .. "/"
+			else 
+			display_content = "📂 " .. get_basename(scanlist[i].abspath) .. "/"
+			end
 		else
 			-- Use the basename from the full path for display
-			-- Two spaces to align with any directories, instead of being "off"
-			display_content = "  " .. get_basename(scanlist[i].abspath)
+			-- Three runes to align with any directories, instead of being "off"
+			display_content = "🗎 " .. get_basename(scanlist[i].abspath)
 		end
 
 		if scanlist[i].owner > 0 then
@@ -1019,10 +1029,70 @@ local function clearselection_if_tree(view)
 	end
 end
 
+local function cancel_filtering()
+	quick_filter = ""
+	-- There is a bug in micro that doesn't redraw the screen if called in the timer callback. 
+	-- TODO: Wait for this bug to be fixed so this works.
+	micro.InfoBar():ClearGutter()
+	quick_timer:Stop()
+	quick_timer = nil
+end
+
+local function find_quick_filter()
+	for i = 1, #scanlist do
+		local bn = get_basename(scanlist[i].abspath)
+		local qf = "^" .. quick_filter
+		if bn:find(qf) ~= nil then
+		   return i
+		end
+	end
+	return -1
+end
+
+local function set_quick_filter(qf)
+	quick_filter = qf
+	micro.InfoBar():Message("Filtering : " .. quick_filter)
+
+	-- Try to find the first file matching the filter
+	local y = find_quick_filter()
+	if y ~= -1 then
+		select_line(y+2)
+	else
+		-- Don't display a cursor if not found
+		move_cursor_top()
+	end
+
+	if quick_timer ~= nil then
+		quick_timer:Stop()
+	end 
+
+	quick_timer = time.AfterFunc(time.ParseDuration("2s"), cancel_filtering)
+end
+
+
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -- All the events for certain Micro keys go below here
 -- Other than things we flat-out fail
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function onRune(view, r)
+	if view ~= tree_view then
+		return false
+	end
+	if uutil.IsWordChar(r) or r == "." then
+		set_quick_filter(quick_filter .. r)
+	end
+	return false
+end
+
+function onBackspace(view)
+	if view ~= tree_view then
+		return false
+	end
+	set_quick_filter(quick_filter:sub(1, -2))
+	return false
+end
+
 
 -- Close current
 function preQuit(view)
@@ -1364,6 +1434,7 @@ function preSelectAll(view)
 	return false_if_tree(view)
 end
 
+
 function init()
     -- Let the user disable showing of dotfiles like ".editorconfig" or ".DS_STORE"
     config.RegisterCommonOption("filemanager", "showdotfiles", true)
@@ -1411,4 +1482,5 @@ function init()
             )
         end
     end
+
 end
